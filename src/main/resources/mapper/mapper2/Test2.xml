@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.mapper2.laxiaDao2">
+	
+	<select id="checkDeliveryWeekLaxia"   resultType="com.example.entity.LaXiaEntity1">
+		select  distinct  a.soco[soco],a.lpco[lpco],D.lpid[lpid],a.cuna[cuna]  from obma a 
+		left join oubd b on a.biid=b.biid
+		left join obbm c  on a.biid=c.biid 
+		LEFT JOIN bilp D  ON A.biid=D.BIID
+		where DateDiff(dd,a.chdt,getdate())&lt;=7
+		and c.biid is  not  null 
+		and a.flag  not in ('31','11','32')
+		and A.pwid !='' 
+		and D.lpid is not null
+	</select>
+	
+</mapper>

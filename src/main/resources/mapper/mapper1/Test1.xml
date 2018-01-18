@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.mapper1.QigegeDao1">
+<!-- 每天发送的七格格数据 -->
+	<select id="checkDeliveryWeekQigege"   resultType="com.example.entity.QigegeEntity1">	  
+	select  distinct  a.soco[soco],a.lpco[lpco],D.lpid[lpid],a.cuna[cuna]  from obma a 
+		left join oubd b on a.biid=b.biid
+		left join obbm c  on a.biid=c.biid 
+		LEFT JOIN bilp D  ON A.biid=D.BIID
+		where DateDiff(dd,a.chdt,getdate())&lt;=7
+		and c.biid is  not  null 
+		and a.flag  not in ('31','11','32')
+		and A.pwid !='' 
+		and D.lpid is not null
+	</select>
+<!-- 每个月发送的数据 -->
+	<!--  采购入库-->	
+	<select id="purchaseMonthQigege" resultType="com.example.entity.headers1"> 
+		select a.biid,b.inco,b.qty,a.chna,a.whid[a_whid],b.whid[b_whid],a.crdt from  psma a left join psde b on a.biid=b.biid
+		where  
+		b.whid ='01W01-1-243-1' 
+		and  convert(varchar(7),a.crdt,121)=convert(varchar(7),dateadd(month,-1,getdate()),121)
+	</select>
+	<!--调拨入库-->
+	<select id="transfeInMonthQigege" resultType="com.example.entity.headers2">
+		select a.biid,b.inco,b.qty,a.chna,a.pfwh,a.powh,a.soco,a.crdt from pama a left join pade b on a.biid=b.biid
+		where 
+		b.whid ='01W01-1-243-1' 
+		and  convert(varchar(7),a.crdt,121)=convert(varchar(7),dateadd(month,-1,getdate()),121)
+	</select>
+	<!-- 销退 -->
+	<select id="pinBackMonthQigege" resultType="com.example.entity.headers1">
+		select a.biid,b.inco,b.qty,a.chna,a.whid[a_whid],b.whid[b_whid],a.crdt from rsma a
+		left join  rsde b on a.biid=b.biid
+		where  
+		b.whid ='01W01-1-243-1' 
+		and  convert(varchar(7),a.crdt,121)=convert(varchar(7),dateadd(month,-1,getdate()),121)
+	</select>
+	<!-- 销售出库 -->
+	<select id="sellMonthQigege" resultType="com.example.entity.headers3">
+		select a.soco,a.biid,b.inco,b.qty,a.chna,a.whid[a_whid],b.whid[b_whid],a.crdt from olma a left join olde b on a.biid=b.biid
+		where 
+		b.whid ='01W01-1-243-1' 
+		and  convert(varchar(7),a.crdt,121)=convert(varchar(7),dateadd(month,-1,getdate()),121)
+	</select>
+	<!-- 调拨出库 -->
+	<select id="transfeOutMonthQigege"  resultType="com.example.entity.headers4">
+		select a.biid,b.inco,b.qty,a.chna,a.pfwh,a.powh,a.crdt from pbma a 
+		left join  pbde b on a.biid=b.biid
+		where 
+		b.whid ='01W01-1-243-1' 
+		and  convert(varchar(7),a.crdt,121)=convert(varchar(7),dateadd(month,-1,getdate()),121)
+	</select>
+	
+	<!-- 采退 -->
+	<select id="feedBackMonthQigege" resultType="com.example.entity.headers1" >
+		select a.biid,b.inco,b.qty,a.chna,a.whid[a_whid],b.whid[b_whid],a.crdt from prma a  left join  prde b on a.biid=b.biid 
+		where 
+		b.whid ='01W01-1-243-1'
+		and  convert(varchar(7),a.crdt,121)=convert(varchar(7),dateadd(month,-1,getdate()),121)
+	</select>
+	<!-- 盘点 -->
+	<select id="checkMonthQigege"  resultType="com.example.entity.headers5">
+		select a.biid,b.inco,b.tqty,a.chna,a.whid[a_whid],b.whid[b_whid],a.crdt from  mtma  a
+		left join  mtde b  on  a.biid=b.biid
+		where  
+		b.whid ='01W01-1-243-1' 
+		and  convert(varchar(7),a.crdt,121)=convert(varchar(7),dateadd(month,-1,getdate()),121)
+	</select>
+	<!-- 其他出库 -->
+	<select id="otherOutMonthQigege"  resultType="com.example.entity.headers1" >
+		select a.biid,b.inco,b.qty,a.chna,a.whid[a_whid],b.whid[b_whid],a.crdt from  ooma  a
+		left join oode b  on  a.biid=b.biid
+		where 
+		b.whid ='01W01-1-243-1' 
+		and  convert(varchar(7),a.crdt,121)=convert(varchar(7),dateadd(month,-1,getdate()),121)
+	</select>
+	<!-- 其他入库 -->
+	<select id="OtherInMonthQigege" resultType="com.example.entity.headers1">
+		select a.biid,b.inco,b.qty,a.chna,a.whid[a_whid],b.whid[b_whid],a.crdt from  oima  a
+		left join  oide b  on  a.biid=b.biid
+		where b.whid ='01W01-1-243-1' 
+		and  convert(varchar(7),a.crdt,121)=convert(varchar(7),dateadd(month,-1,getdate()),121)
+	</select>
+</mapper>

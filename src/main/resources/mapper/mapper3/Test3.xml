@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.mapper3.TestDao3">
+	<select id="jstData" resultType="com.example.entity.Data3">
+select e.outer_sku_id,e.xiaoliang7,f.xiaoliang14,g.xiaoliang30,xiaoliang from
+(select b.outer_sku_id,sum(convert(numeric(9, 2),b.num))xiaoliang7  from tb_trade   a
+left join  tb_trade_order  b   on a.tid=b.tid
+where  b.outer_sku_id like 'TM%'
+AND A.pay_time is not null
+and DateDiff(dd,pay_time,getdate())&lt;=7
+group by b.outer_sku_id)e
+left join 
+(select b.outer_sku_id,sum(convert(numeric(9, 2),b.num))xiaoliang14  from tb_trade   a
+left join  tb_trade_order  b   on a.tid=b.tid
+where  b.outer_sku_id like 'TM%'
+AND A.pay_time is not null
+and DateDiff(dd,pay_time,getdate())&lt;=14
+group by b.outer_sku_id)f             on e.outer_sku_id=f.outer_sku_id
+left join 
+(select b.outer_sku_id,sum(convert(numeric(9, 2),b.num))xiaoliang30  from tb_trade   a
+left join  tb_trade_order  b   on a.tid=b.tid
+where  b.outer_sku_id like 'TM%'
+AND A.pay_time is not null
+and DateDiff(dd,pay_time,getdate())&lt;=30
+group by b.outer_sku_id)g            on e.outer_sku_id=g.outer_sku_id
+left join 
+(select b.outer_sku_id,sum(convert(numeric(9, 2),b.num))xiaoliang  from tb_trade   a
+left join  tb_trade_order  b   on a.tid=b.tid
+where  b.outer_sku_id like 'TM%'
+AND A.pay_time is not null
+group by b.outer_sku_id)i           on e.outer_sku_id=i.outer_sku_id
+	</select>
+</mapper>
